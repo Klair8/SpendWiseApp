@@ -2,12 +2,19 @@
  * This Api class lets you define an API endpoint and methods to request
  * data and process it.
  *
- * See the [Backend API Integration](https://docs.infinite.red/ignite-cli/boilerplate/app/services/#backend-api-integration)
+ * See the [Backend API Integration](https://github.com/infinitered/ignite/blob/master/docs/Backend-API-Integration.md)
  * documentation for more details.
  */
-import { ApisauceInstance, create } from "apisauce"
+import {
+  ApisauceInstance,
+  create,
+} from "apisauce"
 import Config from "../../config"
-import type { ApiConfig } from "./api.types"
+import axios from "axios";
+import type {
+  ApiConfig,
+} from "./api.types"
+
 
 /**
  * Configuring the apisauce instance.
@@ -38,7 +45,98 @@ export class Api {
       },
     })
   }
+
 }
 
-// Singleton instance of the API for convenience
+// Function to set token for authentication
+export const setAuthToken = (token: string | null) => {
+  if (token) {
+    axios.defaults.headers.common["x-auth-token"] = token;
+  } else {
+    delete axios.defaults.headers.common["x-auth-token"];
+  }
+};
+
+export const addExpense = async (amount, category, note, date) => {
+  try {
+    const response = await axios.post(`${Config.API_URL}/expenses/add`, {
+      amount,
+      category,
+      note,
+      date,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error can't add an expense:", error);
+  }
+};
+
+
+export const getExpenses = async () => {
+  try {
+    const response = await axios.get(`${Config.API_URL}/expenses`);
+    return response.data;
+  } catch (error){
+    console.error("Error can't get expenses:", error);
+  }
+};
+
+export const modifyExpense = async (id: string, amount: number, category: string, note?: string) => {
+  try {
+    const response = await axios.put(`${Config.API_URL}/expenses/update/${id}`, {
+      amount,
+      category,
+      note: note || "",
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error updating expense:", error.response?.data || error.message);
+    return null;
+  }
+};
+
+export const deleteExpense = async (id: string) => {
+  try {
+    await axios.delete(`${Config.API_URL}/expenses/delete/${id}`);
+    return true;
+  } catch (error) {
+    console.error("❌ Error deleting expense:", error.response?.data || error.message);
+    return false;
+  }
+};
+
+/**  Sign Up User */
+export const signUpUser = async (username: string, email: string, password: string) => {
+  try {
+    const response = await axios.post(`${Config.API_URL}/auth/signup`, {
+      username,
+      email,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error signing up user:", error.response?.data || error.message);
+    return null;
+  }
+};
+
+/**  Log in a user */
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await axios.post(`${Config.API_URL}/auth/login`, {
+      email,
+      password,
+    });
+
+    if (response.data?.token) {
+      setAuthToken(response.data.token);
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error logging in:", error.response?.data || error.message);
+    return null;
+  }
+};
+
 export const api = new Api()
