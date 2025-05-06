@@ -39,6 +39,9 @@ const en = {
     body:" Transaction History",
     bodyOption: "View All",
   },
+  Profile:{
+    title:"Profil Page",
+  },
   AddExpense:{
     title:"Add Expense",
   },

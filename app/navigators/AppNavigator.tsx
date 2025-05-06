@@ -35,8 +35,10 @@ import { colors } from "app/theme"
  *   https://reactnavigation.org/docs/typescript/#organizing-types
  */
 export type AppStackParamList = {
-  Login: undefined // @demo remove-current-line
+  Login: undefined ;
+
   Welcome: NavigatorScreenParams<TabParamList> ;
+  ProfilPage: undefined;
   HomeScreen: undefined;
   AddExpense: undefined;
   Transactions: undefined;
@@ -75,6 +77,7 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen name="HomeScreen" component={Screens.HomeScreen} />
           <Stack.Screen name="AddExpense" component={Screens.AddExpenseScreen} />
           <Stack.Screen name="Transactions" component={Screens.TransactionsScreen} />
+          <Stack.Screen name="ProfilPage" component={Screens.ProfilPageScreen} />
         </>
       ) : (
         <>

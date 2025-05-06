@@ -57,17 +57,60 @@ export const setAuthToken = (token: string | null) => {
   }
 };
 
-export const addExpense = async (amount, category, note, date) => {
+/**  Sign Up User */
+export const signUpUser = async (username: string, email: string, password: string) => {
   try {
+    const response = await axios.post(`${Config.API_URL}/auth/signup`, {
+      username,
+      email,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error signing up user:", error.response?.data || error.message);
+    return null;
+  }
+};
+
+/**  Log in a user */
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await axios.post(`${Config.API_URL}/auth/login`, {
+      email,
+      password,
+    });
+
+    if (response.data?.token) {
+      setAuthToken(response.data.token);
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error logging in:", error.response?.data || error.message);
+    return null;
+  }
+};
+
+export const addExpense = async (amount: any, category: any, note: any, date: any) => {
+  try {
+    console.log("📤 Sending expense to API:", {
+      amount,
+      category,
+      note,
+      date,
+    });
+
     const response = await axios.post(`${Config.API_URL}/expenses/add`, {
       amount,
       category,
       note,
       date,
     });
+
+    console.log("✅ API response:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error can't add an expense:", error);
+    console.error("❌ Error adding expense:", axios.isAxiosError(error) ? error.response?.data : error);
   }
 };
 
@@ -105,38 +148,6 @@ export const deleteExpense = async (id: string) => {
   }
 };
 
-/**  Sign Up User */
-export const signUpUser = async (username: string, email: string, password: string) => {
-  try {
-    const response = await axios.post(`${Config.API_URL}/auth/signup`, {
-      username,
-      email,
-      password,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("❌ Error signing up user:", error.response?.data || error.message);
-    return null;
-  }
-};
 
-/**  Log in a user */
-export const loginUser = async (email: string, password: string) => {
-  try {
-    const response = await axios.post(`${Config.API_URL}/auth/login`, {
-      email,
-      password,
-    });
-
-    if (response.data?.token) {
-      setAuthToken(response.data.token);
-    }
-
-    return response.data;
-  } catch (error) {
-    console.error("❌ Error logging in:", error.response?.data || error.message);
-    return null;
-  }
-};
 
 export const api = new Api()

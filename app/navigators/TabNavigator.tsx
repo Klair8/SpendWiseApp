@@ -4,7 +4,7 @@ import React from "react"
 import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
-import { AddExpenseScreen, HomeScreen, TransactionsScreen } from "../screens"
+import { AddExpenseScreen, HomeScreen, TransactionsScreen, ProfilPageScreen } from "../screens"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 export type TabParamList = {
   HomeStack: undefined 
   AddExpense: undefined
+  ProfilPage: undefined
   DemoDebug: undefined
   DemoShowroom: undefined
   Transactions: undefined
@@ -82,6 +83,28 @@ export function TabNavigator() {
         }}
       />
 
+      <Tab.Screen
+        name="ProfilPage"
+        component={ProfilPageScreen}
+        options={{
+          // tabBarLabel: translate("AddExpenseScreen:title"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="bell" color={focused ? colors.tint : undefined} size={30} />
+          ),
+        }}
+      />
+
+
+        <Tab.Screen
+        name="Transactions"
+        component={TransactionsScreen}
+        options={{
+          // tabBarLabel: translate("AddExpenseScreen:title"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="bell" color={focused ? colors.tint : undefined} size={30} />
+          ),
+        }}
+      />
 
     </Tab.Navigator>
   )

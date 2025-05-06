@@ -12,7 +12,7 @@ import { TouchableOpacity } from "react-native-gesture-handler"
 import Config from "app/config"
 
 
-export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddExpenseScreen(_props) {
+export const ProfilPageScreen: FC<TabScreenProps<"ProfilPage">> = function ProfilPageScreen(_props) {
 
   const [selectedCategory, setSelectedCategory] = useState("")
   const [note, setNote] = useState<string>("");
@@ -88,7 +88,7 @@ export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddEx
 
     return (
         <Screen preset="scroll" contentContainerStyle={$container} safeAreaEdges={["top"]}>
-          <Text preset="formLabel" tx="AddExpense:title" style={$title} />
+          <Text preset="formLabel" tx="Profile:title" style={$title} />
    
           <TextField
             placeholder="$" 
