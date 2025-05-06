@@ -1,5 +1,7 @@
 PODS:
   - boost (1.84.0)
+  - BVLinearGradient (2.8.3):
+    - React-Core
   - DoubleConversion (1.1.6)
   - EXConstants (17.0.8):
     - ExpoModulesCore
@@ -1350,7 +1352,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-keyboard-controller (1.17.0):
+  - react-native-keyboard-controller (1.17.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1363,7 +1365,7 @@ PODS:
     - React-featureflags
     - React-graphics
     - React-ImageManager
-    - react-native-keyboard-controller/common (= 1.17.0)
+    - react-native-keyboard-controller/common (= 1.17.1)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -1372,7 +1374,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-keyboard-controller/common (1.17.0):
+  - react-native-keyboard-controller/common (1.17.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1952,6 +1954,7 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - Expo (from `../node_modules/expo`)
@@ -2045,6 +2048,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  BVLinearGradient:
+    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXConstants:
@@ -2215,6 +2220,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
+  BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   EXConstants: a1f35b9aabbb3c6791f8e67722579b1ffcdd3f18
   Expo: 3e53243e3281214a7d613f8a875c0b732d7512c2
@@ -2262,7 +2268,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 6efad4a606c1fae7e4a93385ee096681ef0300dc
   React-microtasksnativemodule: a645237a841d733861c70b69908ab4a1707b52ad
   react-native-date-picker: f5ab897b8665a4cbd2cc7159cb65e5cf35cce8a5
-  react-native-keyboard-controller: c42bd79e114596843153cc6574c0419b8222f2cc
+  react-native-keyboard-controller: 19173f41ad233ad4ae4d96da443dad195ed62146
   react-native-mmkv: 15b2a88cd80e999a53c6dc06f6ef1b6ce5c172a0
   react-native-safe-area-context: 0dfbd139206a79364916959bc8b1a6bea3caba97
   React-nativeconfig: 8efdb1ef1e9158c77098a93085438f7e7b463678

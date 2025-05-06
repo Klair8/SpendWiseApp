@@ -30,6 +30,8 @@ import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import Config from "./config"
+import { PaperProvider, MD3DarkTheme, MD3LightTheme } from "react-native-paper"
+import { useColorScheme } from "react-native"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { loadDateFnsLocale } from "./utils/formatDate"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
@@ -72,6 +74,9 @@ export function App() {
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad)
   const [isI18nInitialized, setIsI18nInitialized] = useState(false)
 
+  const colorScheme = useColorScheme()
+  const theme = colorScheme === "dark" ? MD3DarkTheme : MD3LightTheme
+
   useEffect(() => {
     initI18n()
       .then(() => setIsI18nInitialized(true))
@@ -112,11 +117,13 @@ export function App() {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <KeyboardProvider>
+        <PaperProvider theme={theme}>
           <AppNavigator
             linking={linking}
             initialState={initialNavigationState}
             onStateChange={onNavigationStateChange}
           />
+          </PaperProvider>
         </KeyboardProvider>
       </ErrorBoundary>
     </SafeAreaProvider>
