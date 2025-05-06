@@ -90,12 +90,12 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
       </ScrollView>
 
       {/* Floating Action Button */}
-      <FAB
+      {/* <FAB
         icon="plus"
         style={$fab}
         onPress={() => console.log("Add new")}
         customSize={56}
-      />
+      /> */}
     </View>
   )
 }

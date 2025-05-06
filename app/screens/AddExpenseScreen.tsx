@@ -1,15 +1,17 @@
 import React, { FC, useState } from "react"
-import { TextStyle, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle, TextInput } from "react-native"
 import { Button, Screen, Text, TextField } from "../components"
 import { TabScreenProps } from "../navigators/TabNavigator"
 import { colors, spacing } from "../theme"
 import { SelectList } from 'react-native-dropdown-select-list'
 import DatePicker from 'react-native-date-picker'
-import { isRTL } from "../i18n"
+import LinearGradient from "react-native-linear-gradient"
 import axios from 'axios'
 import { Divider } from "app/components/Divider"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import Config from "app/config"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Icon } from "react-native-paper"
 
 
 export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddExpenseScreen(_props) {
@@ -51,7 +53,7 @@ export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddEx
     //   alert("Amount and Categories are required")
     //   return;
     // }
-
+  
   console.log("Sending request to API:", `${Config.API_URL}/expenses/add`);
   console.log("Request body:", {
     user: "67c57fff771bc20a4a2aaeba",
@@ -88,16 +90,20 @@ export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddEx
 
     return (
         <Screen preset="scroll" contentContainerStyle={$container} safeAreaEdges={["top"]}>
-          <Text preset="formLabel" tx="AddExpense:title" style={$title} />
-   
-          <TextField
-            placeholder="$" 
-            value={amount}
-            onChangeText={setAmount}
-            keyboardType="numeric"
-            containerStyle={$inputContainer}
-            style={$inputText}
+          <Text preset="subheading" tx="AddExpense:title" style={$title} />
+        <View style={$amountWrapperContainer}>
+          <View style={$amountWrapper}>
+            <Text style={$dollarSign}>$</Text>
+            <TextInput
+              value={amount}
+              onChangeText={setAmount}
+              keyboardType="numeric"
+              placeholder="0"
+              style={$amountText}
             />
+          </View>
+          </View>
+
 
           <Divider size={40} />
 
@@ -111,9 +117,10 @@ export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddEx
           <Divider size={40} />
 
           {!expanded ? (
-            <TouchableOpacity style={$dropdown} onPress={() => setExpanded(true)}>
-              <Text style={{ color: colors.text }}>Notes</Text>
-            </TouchableOpacity>
+           <TouchableOpacity style={$dropdownRow} onPress={() => setExpanded(true)}>
+            <Icon source="note-text-outline" size={20} color={colors.text} />
+            <Text style={$dropdownText}>Notes</Text>
+          </TouchableOpacity>
           ) : (
             <TextField
               placeholder="Notes"
@@ -128,8 +135,9 @@ export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddEx
 
         <Divider size={40} />
 
-        <TouchableOpacity style={$dropdown} onPress={() => setOpen(true)}>
-          <Text>{date.toDateString()}</Text>
+        <TouchableOpacity style={$dropdownRow} onPress={() => setOpen(true)}>
+          <Icon source="calendar-month-outline" size={20} color={colors.text} />
+          <Text style={$dropdownText}>{date.toDateString()}</Text>
         </TouchableOpacity>
 
         <DatePicker
@@ -146,43 +154,113 @@ export const AddExpenseScreen: FC<TabScreenProps<"AddExpense">> = function AddEx
         />
 
       <Divider size={80} />
-
-      <Button onPress={handleSaveExpense} text="Save" />
-       
+      <View style={$buttonWrapper}>
+        <TouchableOpacity onPress={handleSaveExpense} activeOpacity={0.8}>
+          <LinearGradient
+            colors={["#4F46E5", "#EC4899", "#F97316"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={$saveButton}
+          >
+            <Text style={$saveButtonText}>SAVE</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
     </Screen>
       )
     }
   
 
-      /** 🔹 STYLING */
+/**  STYLING */
 
   const $container: ViewStyle = {
     paddingTop: spacing.lg + spacing.xl,
     paddingHorizontal: spacing.lg,
+    backgroundColor: "#F9FAFB",
   }
   
   const $title: TextStyle = {
     marginBottom: spacing.sm,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    fontSize: 20,
+    color: colors.palette.neutral900,
   }
 
-const $inputContainer: ViewStyle = {
-  borderRadius: 20,
-  borderWidth: 1,
-  borderColor: colors.palette.neutral300,
-  paddingHorizontal: spacing.md,
-  paddingVertical: spacing.sm,
-}
+  const $amountWrapperContainer: ViewStyle = {
+    flexDirection: "row",
+    justifyContent: "center",
+  }
+  
+  const $amountWrapper: ViewStyle = {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 50,
+    width: "80%",
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 3,
+    marginBottom: spacing.lg,
+  }
+  
+  const $dollarSign: TextStyle = {
+    fontSize: 20,
+    color: "#6B7280", 
+    marginRight: spacing.xs,
+  }
+  
+  const $amountText: TextStyle = {
+    fontSize: 28,
+    textAlign: "left",
+    fontWeight: "500",
+    color: "#7C3AED", 
+  }
+  const $dropdownRow: ViewStyle = {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.palette.neutral300,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    gap: spacing.sm, // if you're using RN 0.71+, otherwise use marginRight
+  }
+  
+  const $dropdownText: TextStyle = {
+    color: colors.text,
+    fontSize: 16,
+  }
+  
+  const $dropdown: ViewStyle = {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.palette.neutral300,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  }
 
-const $inputText: TextStyle = {
-  textAlign: "center",
-  fontSize: 18,
-}
+  const $buttonWrapper: ViewStyle = {
+    marginBottom: 30,
+    width: "100%",
+  }
+  const $saveButton: ViewStyle = {
+    borderRadius: 30,
+    paddingVertical: 14,
+    height: 80,
+    alignItems: "center",
+  }
 
-const $dropdown: ViewStyle = {
-  borderRadius: 20,
-  borderWidth: 1,
-  borderColor: colors.palette.neutral300,
-  paddingHorizontal: spacing.md,
-  paddingVertical: spacing.sm,
-}
+  const $saveButtonText: TextStyle = {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 1,
+  }
+
 
